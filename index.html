@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#091F20">
+<title>For You 💛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+–teal-deep: #0B3B3C;
+–teal: #1A5C5E;
+–teal-light: #2A7C7E;
+–rose-gold: #C6907A;
+–rose-gold-light: #E8BFA8;
+–rose-glow: #D4A088;
+–cream: #FFF5EB;
+–cream-soft: #FDE8D0;
+–gold: #D4AF65;
+–gold-light: #F0D48A;
+–night: #091F20;
+–night-mid: #0D2E2F;
+–vh: 1vh;
+}
+
+html {
+height: 100%;
+overflow: hidden;
+background: var(–night);
+}
+body {
+height: 100%;
+min-height: 100vh;
+min-height: 100dvh;
+overflow: hidden;
+font-family: ‘Quicksand’, sans-serif;
+touch-action: manipulation;
+-webkit-tap-highlight-color: transparent;
+background: var(–night);
+color: var(–cream);
+}
+
+/* ===== SCREENS ===== */
+.screen {
+position: fixed;
+top: 0; left: 0;
+width: 100%;
+height: 100%;
+height: 100vh;
+height: 100dvh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+transition: opacity 1s ease, transform 1s ease;
+z-index: 1;
+overflow: hidden;
+}
+.screen.hidden { opacity: 0; pointer-events: none; transform: scale(0.96); z-index: 0; }
+.screen.active { opacity: 1; pointer-events: all; transform: scale(1); z-index: 10; }
+
+/* ===== SCREEN 1: WELCOME ===== */
+#welcome {
+background: linear-gradient(160deg, var(–night) 0%, var(–teal-deep) 40%, #1A3A4A 70%, var(–night-mid) 100%);
+}
+
+.stars-container {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+pointer-events: none;
+}
+.star {
+position: absolute; border-radius: 50%;
+background: radial-gradient(circle, var(–cream) 0%, transparent 70%);
+animation: twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes twinkle { 0% { opacity: 0.15; transform: scale(0.7); } 100% { opacity: 0.9; transform: scale(1.1); } }
+
+.moon {
+position: absolute; top: 7%; right: 10%;
+width: 75px; height: 75px; border-radius: 50%;
+background: linear-gradient(135deg, var(–cream), var(–cream-soft));
+box-shadow: 0 0 50px rgba(253,232,208,0.25), 0 0 100px rgba(253,232,208,0.1);
+animation: moonGlow 5s ease-in-out infinite alternate;
+z-index: 2;
+}
+@keyframes moonGlow { 0% { box-shadow: 0 0 50px rgba(253,232,208,0.25); } 100% { box-shadow: 0 0 70px rgba(253,232,208,0.35); } }
+
+.moon-ring {
+position: absolute; top: 7%; right: 10%; width: 75px; height: 75px;
+border-radius: 50%; border: 1px solid rgba(253,232,208,0.1);
+animation: ringExpand 5s ease-in-out infinite;
+z-index: 2;
+}
+@keyframes ringExpand { 0%,100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.6); opacity: 0; } }
+
+.welcome-content {
+text-align: center; z-index: 10; padding: 20px;
+animation: fadeUp 1.8s ease-out;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.eid-badge {
+display: inline-block; padding: 10px 30px; border-radius: 50px;
+background: linear-gradient(135deg, rgba(212,175,101,0.15), rgba(198,144,122,0.15));
+border: 1px solid rgba(212,175,101,0.25); color: var(–gold);
+font-size: 0.9em; font-weight: 600;
+margin-bottom: 35px; letter-spacing: 2px;
+animation: badgePulse 3s ease-in-out infinite;
+}
+@keyframes badgePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+.welcome-content h1 {
+font-family: ‘Caveat’, cursive; font-size: 3.2em; color: var(–cream);
+text-shadow: 0 0 40px rgba(198,144,122,0.2);
+margin-bottom: 8px; line-height: 1.1;
+}
+.welcome-content .subtitle {
+font-family: ‘Cormorant Garamond’, serif; font-size: 0.95em;
+color: rgba(255,245,235,0.5); margin-bottom: 45px; font-weight: 400;
+letter-spacing: 4px; text-transform: uppercase;
+}
+
+.start-btn {
+padding: 16px 48px; border-radius: 50px;
+border: 1px solid rgba(198,144,122,0.3);
+background: linear-gradient(135deg, var(–rose-gold), var(–rose-glow));
+color: var(–cream); font-family: ‘Quicksand’, sans-serif; font-size: 1em;
+font-weight: 600; cursor: pointer; letter-spacing: 1px;
+box-shadow: 0 8px 35px rgba(198,144,122,0.3), 0 2px 10px rgba(0,0,0,0.2);
+transition: all 0.4s ease;
+-webkit-appearance: none;
+}
+.start-btn:active { transform: scale(0.97); }
+
+/* ===== SCREEN 2: NIGHT DRIVE ===== */
+#road-screen {
+background: linear-gradient(180deg, var(–night) 0%, var(–night-mid) 30%, var(–teal-deep) 60%, #0A2526 100%);
+user-select: none;
+}
+
+.road-scene {
+position: absolute; top: 0; left: 0;
+width: 100%; height: 100%; overflow: hidden;
+}
+
+.road-moon-small {
+position: absolute; top: 5%; left: 13%;
+width: 40px; height: 40px; border-radius: 50%;
+background: linear-gradient(135deg, var(–cream), var(–cream-soft));
+box-shadow: 0 0 25px rgba(253,232,208,0.2);
+z-index: 2;
+}
+.road-stars-bg {
+position: absolute; top: 0; left: 0; width: 100%; height: 55%;
+pointer-events: none;
+}
+
+.skyline {
+position: absolute; bottom: 33%; width: 200%; height: 100px;
+animation: skylineDrift 30s linear infinite;
+z-index: 1;
+}
+@keyframes skylineDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.building {
+position: absolute; bottom: 0;
+background: var(–night); border-radius: 1px 1px 0 0; opacity: 0.7;
+}
+.building .win {
+position: absolute; width: 3px; height: 3px; border-radius: 1px;
+background: rgba(212,175,101,0.25);
+}
+
+.road {
+position: absolute; bottom: 0; left: 0; width: 100%; height: 33%;
+background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+z-index: 3;
+}
+.road-edge {
+position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+background: rgba(198,144,122,0.1);
+}
+.road-divider {
+position: absolute; top: 46%; left: 0; width: 200%; height: 2px;
+background: repeating-linear-gradient(90deg, var(–gold-light) 0px, var(–gold-light) 25px, transparent 25px, transparent 55px);
+opacity: 0.35;
+animation: dividerMove 2s linear infinite;
+}
+@keyframes dividerMove { from { transform: translateX(0); } to { transform: translateX(-55px); } }
+
+.ambient-glow {
+position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%);
+width: 350px; height: 180px;
+background: radial-gradient(ellipse at bottom, rgba(198,144,122,0.04) 0%, transparent 70%);
+pointer-events: none; z-index: 4;
+}
+
+.road-header {
+position: absolute; top: 3%; width: 100%; text-align: center; z-index: 20; padding: 0 15px;
+}
+.road-title {
+font-family: ‘Caveat’, cursive; font-size: 1.5em; color: var(–cream); opacity: 0.85;
+}
+.road-subtitle {
+font-family: ‘Cormorant Garamond’, serif; font-size: 0.65em;
+color: rgba(255,245,235,0.35); letter-spacing: 3px; margin-top: 3px;
+text-transform: uppercase;
+}
+.plate-counter {
+position: absolute; top: 3%; right: 15px;
+color: rgba(255,245,235,0.25); font-size: 0.75em; z-index: 20;
+font-family: ‘Cormorant Garamond’, serif; letter-spacing: 2px;
+}
+
+#carZone {
+position: absolute; bottom: 5%; left: 0; width: 100%; height: 28%; z-index: 15;
+}
+.driving-car {
+position: absolute; cursor: pointer;
+filter: drop-shadow(0 6px 20px rgba(0,0,0,0.5));
+transition: filter 0.3s;
+}
+.driving-car:active { filter: drop-shadow(0 6px 20px rgba(0,0,0,0.5)) brightness(1.15); }
+
+.driving-car.slide-in-right {
+right: -220px;
+animation: slideInR 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.driving-car.slide-in-left {
+left: -220px;
+animation: slideInL 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes slideInR {
+0% { right: -220px; }
+70% { right: calc(50% - 100px); }
+85% { right: calc(50% - 85px); }
+100% { right: calc(50% - 90px); }
+}
+@keyframes slideInL {
+0% { left: -220px; }
+70% { left: calc(50% - 100px); }
+85% { left: calc(50% - 85px); }
+100% { left: calc(50% - 90px); }
+}
+
+.driving-car.idle { animation: carFloat 3s ease-in-out infinite; }
+@keyframes carFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+.driving-car.leave-right { animation: leaveR 1.2s cubic-bezier(0.4, 0, 0.7, 0.2) forwards; }
+.driving-car.leave-left { animation: leaveL 1.2s cubic-bezier(0.4, 0, 0.7, 0.2) forwards; }
+@keyframes leaveR { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(110vw); opacity: 0; } }
+@keyframes leaveL { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(-110vw); opacity: 0; } }
+
+.plate-popup {
+position: absolute; top: 14%; width: 100%;
+display: flex; flex-direction: column; align-items: center;
+z-index: 25; padding: 0 20px;
+opacity: 0; transform: translateY(20px) scale(0.88);
+transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+pointer-events: none;
+}
+.plate-popup.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+.popup-plate {
+background: linear-gradient(180deg, #FEFEFE 0%, #F4F0EC 100%);
+border: 3px solid #2A2A2A; border-radius: 8px;
+padding: 8px 32px 12px; min-width: 230px; text-align: center;
+box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.9);
+position: relative;
+}
+.popup-plate::before {
+content: ‘’; position: absolute; top: 3px; left: 4px; right: 4px;
+height: 3px; background: var(–teal); border-radius: 2px 2px 0 0; opacity: 0.7;
+}
+.popup-region {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 0.5em; color: var(–teal); letter-spacing: 4px; font-weight: 600; margin-top: 5px;
+}
+.popup-number {
+font-family: ‘Poppins’, sans-serif; font-size: 1.85em; font-weight: 700;
+color: #1a1a1a; letter-spacing: 5px; line-height: 1.2;
+}
+.popup-message {
+margin-top: 16px; font-family: ‘Caveat’, cursive; font-size: 1.3em;
+color: var(–cream); text-align: center; max-width: 310px;
+text-shadow: 0 2px 15px rgba(0,0,0,0.5); line-height: 1.35;
+}
+
+.tap-prompt {
+position: absolute; bottom: 11%; width: 100%; text-align: center;
+z-index: 20; pointer-events: none;
+transition: opacity 0.4s ease;
+}
+.tap-prompt span {
+display: inline-block; padding: 9px 26px; border-radius: 30px;
+background: rgba(198,144,122,0.1); backdrop-filter: blur(8px);
+border: 1px solid rgba(198,144,122,0.15);
+color: rgba(255,245,235,0.55); font-size: 0.78em;
+letter-spacing: 1px; font-weight: 500;
+animation: promptGlow 2.5s ease-in-out infinite;
+}
+@keyframes promptGlow { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+.dash-area {
+position: absolute; bottom: 0; left: 0; width: 100%; height: 6%;
+background: linear-gradient(180deg, transparent, rgba(0,0,0,0.4));
+z-index: 30;
+}
+
+/* ===== SCREEN 3: PRESCRIPTION ===== */
+#prescription-screen {
+background: linear-gradient(160deg, var(–cream) 0%, var(–cream-soft) 50%, #F5DCC8 100%);
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+}
+.rx-container {
+width: 90%; max-width: 400px; margin: 25px auto; padding: 28px 22px;
+background: white; border-radius: 3px;
+box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+border-top: 4px solid var(–rose-gold); position: relative;
+animation: rxSlide 0.8s ease-out;
+}
+@keyframes rxSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.rx-header { text-align: center; padding-bottom: 15px; border-bottom: 2px dashed #eee; margin-bottom: 18px; }
+.rx-logo { font-size: 2em; margin-bottom: 5px; }
+.rx-doc-name { font-family: ‘Caveat’, cursive; font-size: 1.8em; color: var(–rose-gold); line-height: 1; }
+.rx-clinic { font-family: ‘Cormorant Garamond’, serif; font-size: 0.7em; color: #aaa; letter-spacing: 2px; margin-top: 3px; text-transform: uppercase; }
+
+.rx-patient { display: flex; justify-content: space-between; margin-bottom: 18px; font-size: 0.82em; color: #888; }
+.rx-patient span { font-weight: 600; color: #444; }
+.rx-symbol { font-family: ‘Caveat’, cursive; font-size: 2.5em; color: var(–rose-gold); opacity: 0.2; position: absolute; top: 85px; left: 18px; }
+
+.rx-items { list-style: none; padding: 0; }
+.rx-item {
+padding: 11px 0; border-bottom: 1px solid #f5f2f0;
+display: flex; align-items: flex-start; gap: 12px;
+opacity: 0; animation: rxItemIn 0.5s ease-out forwards;
+}
+.rx-item .rx-check {
+width: 22px; height: 22px; border-radius: 50%;
+background: linear-gradient(135deg, var(–teal-light), var(–teal));
+display: flex; align-items: center; justify-content: center;
+color: white; font-size: 0.65em; flex-shrink: 0; margin-top: 2px;
+}
+.rx-item .rx-med { font-weight: 600; color: #333; font-size: 0.92em; }
+.rx-item .rx-dose { font-size: 0.76em; color: #aaa; margin-top: 2px; }
+@keyframes rxItemIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+.rx-note {
+margin-top: 18px; padding: 14px;
+background: linear-gradient(135deg, var(–cream), var(–cream-soft));
+border-radius: 10px; border-left: 3px solid var(–rose-gold);
+}
+.rx-note-label { font-size: 0.68em; color: var(–rose-gold); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+.rx-note-text { font-family: ‘Caveat’, cursive; font-size: 1.15em; color: #666; line-height: 1.4; }
+
+.rx-signature { margin-top: 22px; text-align: right; padding-top: 14px; border-top: 1px solid #eee; }
+.rx-sig-line { font-family: ‘Caveat’, cursive; font-size: 1.5em; color: var(–rose-gold); }
+.rx-sig-label { font-family: ‘Cormorant Garamond’, serif; font-size: 0.6em; color: #ccc; letter-spacing: 2px; }
+
+.rx-stamp {
+position: absolute; top: 48%; right: 12px; transform: rotate(15deg); opacity: 0.1;
+border: 3px solid var(–rose-gold); border-radius: 50%;
+width: 85px; height: 85px; display: flex; align-items: center; justify-content: center;
+font-weight: 700; color: var(–rose-gold); font-size: 0.6em; text-align: center; letter-spacing: 1px;
+}
+
+.next-btn {
+display: block; margin: 18px auto 28px;
+padding: 14px 42px; border-radius: 50px;
+border: 1px solid rgba(198,144,122,0.3);
+background: linear-gradient(135deg, var(–rose-gold), var(–rose-glow));
+color: var(–cream); font-family: ‘Quicksand’, sans-serif;
+font-size: 0.95em; font-weight: 600; cursor: pointer;
+box-shadow: 0 6px 25px rgba(198,144,122,0.25); transition: all 0.3s ease;
+-webkit-appearance: none;
+}
+.next-btn:active { transform: scale(0.97); }
+
+/* ===== SCREEN 4: FINAL ===== */
+#final-screen {
+background: linear-gradient(160deg, var(–night) 0%, var(–teal-deep) 40%, #1A3A4A 70%, var(–night-mid) 100%);
+}
+.lanterns-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.lantern {
+position: absolute; width: 28px; height: 42px;
+border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+animation: lanternSway 5s ease-in-out infinite alternate;
+}
+.lantern::before {
+content: ‘’; position: absolute; top: -18px; left: 50%;
+transform: translateX(-50%); width: 1px; height: 18px;
+background: rgba(212,175,101,0.2);
+}
+@keyframes lanternSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } }
+
+.final-content { z-index: 10; text-align: center; padding: 30px; animation: finalFade 1.8s ease-out; }
+@keyframes finalFade { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+.final-eid {
+font-family: ‘Caveat’, cursive; font-size: 2.8em; color: var(–gold);
+text-shadow: 0 0 35px rgba(212,175,101,0.25); margin-bottom: 5px;
+}
+.final-mubarak {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 0.9em; color: rgba(255,245,235,0.45);
+letter-spacing: 5px; font-weight: 400; margin-bottom: 30px; text-transform: uppercase;
+}
+.final-message {
+font-family: ‘Caveat’, cursive; font-size: 1.45em; color: var(–cream);
+line-height: 1.6; max-width: 320px; margin: 0 auto 30px;
+}
+.final-from {
+font-family: ‘Cormorant Garamond’, serif; font-size: 0.85em;
+color: rgba(255,245,235,0.35); letter-spacing: 2px; font-style: italic;
+}
+.heart-float {
+position: absolute; font-size: 1.1em;
+animation: floatUp 7s ease-in infinite; opacity: 0;
+}
+@keyframes floatUp {
+0% { opacity: 0; transform: translateY(100vh) scale(0.5); }
+15% { opacity: 0.7; }
+100% { opacity: 0; transform: translateY(-20vh) scale(1.1); }
+}
+
+@media (max-width: 380px) {
+.welcome-content h1 { font-size: 2.5em; }
+.popup-number { font-size: 1.45em; }
+.popup-plate { min-width: 190px; padding: 8px 22px 10px; }
+.popup-message { font-size: 1.1em; }
+.final-eid { font-size: 2.3em; }
+.final-message { font-size: 1.25em; }
+}
+
+@media (max-height: 700px) {
+.plate-popup { top: 10%; }
+.road-header { top: 1%; }
+.welcome-content h1 { font-size: 2.6em; }
+.eid-badge { margin-bottom: 20px; }
+.welcome-content .subtitle { margin-bottom: 30px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- SCREEN 1 -->
+
+<div id="welcome" class="screen active">
+  <div class="stars-container" id="starsWelcome"></div>
+  <div class="moon"></div><div class="moon-ring"></div>
+  <div class="welcome-content">
+    <div class="eid-badge">🌙 Eid Mubarak</div>
+    <h1>Something Small<br>For Someone Special</h1>
+    <p class="subtitle">made with care</p>
+    <button class="start-btn" onclick="goToScreen('road-screen')">Open Your Gift ✨</button>
+  </div>
+</div>
+
+<!-- SCREEN 2 -->
+
+<div id="road-screen" class="screen hidden">
+  <div class="road-scene">
+    <div class="road-stars-bg" id="roadStars"></div>
+    <div class="road-moon-small"></div>
+    <div class="skyline" id="skyline"></div>
+    <div class="road-header">
+      <div class="road-title">🚗 The Number Plate Game</div>
+      <div class="road-subtitle">remember that night we read every plate?</div>
+    </div>
+    <div class="plate-counter" id="plateCounter">1 / 7</div>
+    <div class="plate-popup" id="platePopup">
+      <div class="popup-plate">
+        <div class="popup-region" id="popupRegion">NEW YORK</div>
+        <div class="popup-number" id="popupNumber">---</div>
+      </div>
+      <div class="popup-message" id="popupMsg"></div>
+    </div>
+    <div id="carZone"></div>
+    <div class="road"><div class="road-edge"></div><div class="road-divider"></div></div>
+    <div class="ambient-glow"></div>
+    <div class="tap-prompt" id="tapPrompt"><span>tap the car when it stops ✨</span></div>
+    <div class="dash-area"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3 -->
+
+<div id="prescription-screen" class="screen hidden">
+  <div class="rx-container">
+    <div class="rx-header">
+      <div class="rx-logo">🩺</div>
+      <div class="rx-doc-name">Dr. Seemab</div>
+      <div class="rx-clinic">Specialist in Stubborn Patients</div>
+    </div>
+    <div class="rx-patient"><div>Patient: <span>Humayra Khan</span></div><div>Date: <span>Eid 2025</span></div></div>
+    <div class="rx-symbol">℞</div>
+    <ul class="rx-items">
+      <li class="rx-item" style="animation-delay:0.2s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">🍵 Hot Chai / Soup</div><div class="rx-dose">3 times daily. No excuses. Doctor's orders.</div></div></li>
+      <li class="rx-item" style="animation-delay:0.4s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">🛌 Mandatory Rest</div><div class="rx-dose">Minimum 8 hours. The clothing business can wait.</div></div></li>
+      <li class="rx-item" style="animation-delay:0.6s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">🧣 Warm Jacket Protocol</div><div class="rx-dose">At all times. Patient has history of ignoring cold weather.</div></div></li>
+      <li class="rx-item" style="animation-delay:0.8s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">🍰 Eid Dessert Therapy</div><div class="rx-dose">1 generous plate minimum. Cake is medicine today.</div></div></li>
+      <li class="rx-item" style="animation-delay:1.0s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">📵 Zero Stress</div><div class="rx-dose">No work. No overthinking. Eid is for resting only.</div></div></li>
+      <li class="rx-item" style="animation-delay:1.2s"><div class="rx-check">✓</div><div class="rx-text"><div class="rx-med">😊 1 Smile Per Hour</div><div class="rx-dose">Patient is too beautiful to look sad. Strictly enforced.</div></div></li>
+    </ul>
+    <div class="rx-note">
+      <div class="rx-note-label">⚠️ Doctor's Note</div>
+      <div class="rx-note-text">Patient is extremely stubborn. Refuses rest. Goes to class with fever. Works while fasting. Requires close monitoring and unlimited chai supply.<br><br>Prognosis: Excellent. She just needs someone who actually makes sure she takes care of herself. 💛</div>
+    </div>
+    <div class="rx-signature"><div class="rx-sig-line">Dr. Seemab ✍️</div><div class="rx-sig-label">Your Personal Care Specialist</div></div>
+    <div class="rx-stamp">EID<br>APPROVED<br>2025</div>
+  </div>
+  <button class="next-btn" onclick="goToScreen('final-screen')">One More Thing... 🌙</button>
+</div>
+
+<!-- SCREEN 4 -->
+
+<div id="final-screen" class="screen hidden">
+  <div class="lanterns-container" id="lanterns"></div>
+  <div class="final-content">
+    <div class="final-eid">Eid Mubarak 🌙</div>
+    <div class="final-mubarak">to my favourite person</div>
+    <div class="final-message">
+      I know you're wrapped in blankets,<br>coughing and being stubborn about rest.<br><br>
+      But I just wanted you to know...<br><br>
+      The passenger seat is cold without you.<br>
+      The number plates aren't funny alone.<br>
+      And LA is nice, but it's missing something.<br><br>
+      Get well soon. I mean it. 💛<br><br>Happy Eid, Humayra.
+    </div>
+    <div class="final-from">— from the one who reads every number plate with you</div>
+  </div>
+</div>
+
+<script>
+// ===== STARS =====
+function makeStars(id, n) {
+  var c = document.getElementById(id);
+  if (!c) return;
+  for (var i = 0; i < n; i++) {
+    var s = document.createElement('div');
+    s.className = 'star';
+    var sz = Math.random() * 2.5 + 0.8;
+    s.style.width = sz + 'px';
+    s.style.height = sz + 'px';
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 100) + '%';
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    s.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+    c.appendChild(s);
+  }
+}
+makeStars('starsWelcome', 55);
+makeStars('roadStars', 35);
+
+// ===== SKYLINE =====
+var skyEl = document.getElementById('skyline');
+function addBuildings(ox) {
+  var ws = [22,32,18,42,28,16,48,25,20,38,14,35,22,40,30,18,33,26,45,20];
+  var hs = [40,70,30,85,52,35,95,48,38,62,25,75,42,82,55,32,68,50,88,36];
+  var x = ox;
+  for (var i = 0; i < ws.length; i++) {
+    var b = document.createElement('div');
+    b.className = 'building';
+    b.style.left = x + 'px';
+    b.style.width = ws[i] + 'px';
+    b.style.height = hs[i] + 'px';
+    for (var wi = 0; wi < Math.floor(hs[i] / 14); wi++) {
+      for (var wj = 0; wj < Math.floor(ws[i] / 8); wj++) {
+        if (Math.random() > 0.5) {
+          var win = document.createElement('div');
+          win.className = 'win';
+          win.style.top = (8 + wi * 12) + 'px';
+          win.style.left = (4 + wj * 8) + 'px';
+          win.style.opacity = (Math.random() * 0.5 + 0.2).toString();
+          b.appendChild(win);
+        }
+      }
+    }
+    skyEl.appendChild(b);
+    x += ws[i] + (Math.random() * 12 + 4);
+  }
+  return x;
+}
+var tw = addBuildings(0);
+addBuildings(tw + 15);
+
+// ===== LANTERNS =====
+var lc = document.getElementById('lanterns');
+var lCols = ['rgba(212,175,101,0.3)','rgba(198,144,122,0.3)','rgba(42,124,126,0.3)','rgba(232,191,168,0.25)'];
+for (var i = 0; i < 8; i++) {
+  var l = document.createElement('div');
+  l.className = 'lantern';
+  l.style.left = (8 + Math.random() * 84) + '%';
+  l.style.top = (3 + Math.random() * 28) + '%';
+  l.style.background = lCols[i % 4];
+  l.style.boxShadow = '0 0 18px ' + lCols[i % 4];
+  l.style.animationDelay = (Math.random() * 4) + 's';
+  l.style.animationDuration = (4 + Math.random() * 3) + 's';
+  lc.appendChild(l);
+}
+
+// ===== HEARTS =====
+var fs = document.getElementById('final-screen');
+var heartChars = ['💛','✨','🌙','💫','🤎'];
+for (var i = 0; i < 10; i++) {
+  var h = document.createElement('div');
+  h.className = 'heart-float';
+  h.textContent = heartChars[i % 5];
+  h.style.left = (Math.random() * 100) + '%';
+  h.style.animationDelay = (Math.random() * 9) + 's';
+  h.style.animationDuration = (6 + Math.random() * 4) + 's';
+  fs.appendChild(h);
+}
+
+// ===== NAV =====
+function goToScreen(id) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) {
+    screens[i].classList.remove('active');
+    screens[i].classList.add('hidden');
+  }
+  var t = document.getElementById(id);
+  t.classList.remove('hidden');
+  t.classList.add('active');
+  if (id === 'road-screen') {
+    plateIdx = -1;
+    setTimeout(launchCar, 600);
+  }
+}
+
+// ===== CAR SVG =====
+function carSVG(bodyColor, roofColor, flip) {
+  var g = flip ? '<g transform="scale(-1,1) translate(-180,0)">' : '<g>';
+  return '<svg width="180" height="72" viewBox="0 0 180 72">' +
+    g +
+    '<rect x="16" y="27" width="148" height="32" rx="12" fill="' + bodyColor + '"/>' +
+    '<rect x="38" y="7" width="96" height="27" rx="11" fill="' + roofColor + '"/>' +
+    '<rect x="47" y="12" width="34" height="17" rx="5" fill="rgba(200,230,240,0.3)"/>' +
+    '<rect x="89" y="12" width="34" height="17" rx="5" fill="rgba(200,230,240,0.3)"/>' +
+    '<rect x="47" y="12" width="34" height="8" rx="3" fill="rgba(255,255,255,0.08)"/>' +
+    '<rect x="89" y="12" width="34" height="8" rx="3" fill="rgba(255,255,255,0.08)"/>' +
+    '<ellipse cx="50" cy="61" rx="12" ry="11" fill="#1a1a1a"/>' +
+    '<ellipse cx="50" cy="61" rx="5.5" ry="5" fill="#3a3a3a"/>' +
+    '<ellipse cx="130" cy="61" rx="12" ry="11" fill="#1a1a1a"/>' +
+    '<ellipse cx="130" cy="61" rx="5.5" ry="5" fill="#3a3a3a"/>' +
+    '<rect x="156" y="34" width="12" height="7" rx="3" fill="#F0D48A" opacity="0.85"/>' +
+    '<rect x="11" y="34" width="12" height="7" rx="3" fill="#C0696E" opacity="0.75"/>' +
+    '</g></svg>';
+}
+
+// Night luxe car colors
+var carColors = [
+  { body: '#8B6F5E', roof: '#7A6050' },
+  { body: '#4A7C7E', roof: '#3D6B6D' },
+  { body: '#C6907A', roof: '#B37E6A' },
+  { body: '#6B8F71', roof: '#5A7E60' },
+  { body: '#9B7A5B', roof: '#8A6A4C' },
+  { body: '#7B6B8A', roof: '#6A5A79' },
+  { body: '#B07878', roof: '#9D6868' }
+];
+
+var plates = [
+  { number: 'GET W3LL', region: 'NEW YORK', msg: 'Coughing little bit? More like coughing a LOT. Take your medicine!', from: 'right', lane: '22%' },
+  { number: 'E1D 2025', region: 'NEW YORK', msg: 'Your first Eid gift is this silly app. Sorry not sorry. 🌙', from: 'left', lane: '48%' },
+  { number: 'H0T S0UP', region: "DOCTOR'S ORDERS", msg: 'If you haven\'t had soup today, this plate is judging you.', from: 'right', lane: '8%' },
+  { number: 'NO W0RK', region: 'EID SPECIAL', msg: 'The dresses can wait. The bangles can wait. REST.', from: 'left', lane: '38%' },
+  { number: 'M1SS U', region: 'LOS ANGELES', msg: 'The passenger seat has been very quiet today. It complained.', from: 'right', lane: '28%' },
+  { number: 'DR1VE OK', region: 'MEMORY LANE', msg: 'Remember when we read every plate that night? That was everything.', from: 'left', lane: '12%' },
+  { number: 'SM1LE 4ME', region: 'LAST ONE', msg: 'Last plate! Now smile and check your prescription below 💛', from: 'right', lane: '32%' }
+];
+
+var plateIdx = -1;
+var canTap = false;
+
+function launchCar() {
+  plateIdx++;
+  if (plateIdx >= plates.length) {
+    goToScreen('prescription-screen');
+    return;
+  }
+
+  var p = plates[plateIdx];
+  var cc = carColors[plateIdx % carColors.length];
+  document.getElementById('plateCounter').textContent = (plateIdx + 1) + ' / ' + plates.length;
+  document.getElementById('platePopup').classList.remove('visible');
+  document.getElementById('tapPrompt').style.opacity = '1';
+
+  var zone = document.getElementById('carZone');
+  zone.innerHTML = '';
+
+  var car = document.createElement('div');
+  car.className = 'driving-car';
+  car.innerHTML = carSVG(cc.body, cc.roof, p.from === 'left');
+  car.style.top = p.lane;
+
+  if (p.from === 'right') {
+    car.classList.add('slide-in-right');
+  } else {
+    car.classList.add('slide-in-left');
+  }
+  zone.appendChild(car);
+  canTap = false;
+
+  setTimeout(function() {
+    car.classList.remove('slide-in-right');
+    car.classList.remove('slide-in-left');
+    car.style.left = 'calc(50% - 90px)';
+    car.style.right = 'auto';
+    car.classList.add('idle');
+    canTap = true;
+
+    car.onclick = function() {
+      if (!canTap) return;
+      canTap = false;
+
+      document.getElementById('popupRegion').textContent = p.region;
+      document.getElementById('popupNumber').textContent = p.number;
+      document.getElementById('popupMsg').textContent = p.msg;
+      document.getElementById('platePopup').classList.add('visible');
+      document.getElementById('tapPrompt').style.opacity = '0';
+
+      setTimeout(function() {
+        car.classList.remove('idle');
+        if (p.from === 'right') {
+          car.classList.add('leave-left');
+        } else {
+          car.classList.add('leave-right');
+        }
+        setTimeout(launchCar, 1000);
+      }, 2800);
+    };
+  }, 2100);
+}
+</script>
+
+</body>
+</html>
