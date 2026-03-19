@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html lang="en" style="background:#091F20;height:100%;margin:0;padding:0;overflow:hidden;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#091F20">
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+width: 100%;
+height: 100%;
+margin: 0;
+padding: 0;
+overflow: hidden;
+background-color: #091F20;
+font-family: ‘Quicksand’, sans-serif;
+touch-action: manipulation;
+-webkit-tap-highlight-color: transparent;
+-webkit-text-size-adjust: 100%;
+color: #FFF5EB;
+}
+
+/* Force screens to cover everything */
+.screen {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+width: 100%;
+height: 100%;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+transition: opacity 0.8s ease;
+background-color: #091F20;
+}
+.screen.hidden {
+opacity: 0;
+pointer-events: none;
+z-index: 0;
+}
+.screen.active {
+opacity: 1;
+pointer-events: all;
+z-index: 10;
+}
+
+/* ===== WELCOME ===== */
+#welcome {
+background: #091F20;
+background-image: linear-gradient(160deg, #091F20 0%, #0B3B3C 40%, #1A3A4A 70%, #0D2E2F 100%);
+}
+
+.stars-container {
+position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+pointer-events: none; overflow: hidden;
+}
+.star {
+position: absolute; border-radius: 50%;
+background: radial-gradient(circle, #FFF5EB 0%, transparent 70%);
+animation: twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes twinkle { 0% { opacity: 0.15; } 100% { opacity: 0.9; } }
+
+.moon {
+position: absolute; top: 7%; right: 10%;
+width: 70px; height: 70px; border-radius: 50%;
+background: linear-gradient(135deg, #FFF5EB, #FDE8D0);
+box-shadow: 0 0 50px rgba(253,232,208,0.25);
+z-index: 2;
+}
+
+.moon-ring {
+position: absolute; top: 7%; right: 10%; width: 70px; height: 70px;
+border-radius: 50%; border: 1px solid rgba(253,232,208,0.1);
+animation: ringPulse 5s ease-in-out infinite; z-index: 2;
+}
+@keyframes ringPulse { 0%,100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.5); opacity: 0; } }
+
+.welcome-content {
+text-align: center; z-index: 10; padding: 20px;
+animation: fadeUp 1.5s ease-out;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+.eid-badge {
+display: inline-block; padding: 10px 28px; border-radius: 50px;
+background: rgba(212,175,101,0.12);
+border: 1px solid rgba(212,175,101,0.25); color: #D4AF65;
+font-size: 0.9em; font-weight: 600; margin-bottom: 32px; letter-spacing: 2px;
+}
+
+.welcome-content h1 {
+font-family: ‘Caveat’, cursive; font-size: 3em; color: #FFF5EB;
+text-shadow: 0 0 40px rgba(198,144,122,0.2);
+margin-bottom: 8px; line-height: 1.1;
+}
+.welcome-content .subtitle {
+font-family: ‘Cormorant Garamond’, serif; font-size: 0.9em;
+color: rgba(255,245,235,0.45); margin-bottom: 40px;
+letter-spacing: 4px; text-transform: uppercase;
+}
+
+.start-btn {
+padding: 15px 44px; border-radius: 50px;
+border: 1px solid rgba(198,144,122,0.3);
+background: linear-gradient(135deg, #C6907A, #D4A088);
+color: #FFF5EB; font-family: ‘Quicksand’, sans-serif; font-size: 1em;
+font-weight: 600; cursor: pointer; letter-spacing: 1px;
+box-shadow: 0 8px 30px rgba(198,144,122,0.3);
+-webkit-appearance: none; appearance: none;
+}
+.start-btn:active { opacity: 0.9; transform: scale(0.98); }
+
+/* ===== ROAD SCREEN ===== */
+#road-screen {
+background: #091F20;
+background-image: linear-gradient(180deg, #091F20 0%, #0D2E2F 30%, #0B3B3C 60%, #0A2526 100%);
+user-select: none;
+}
+
+.road-scene {
+position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;
+}
+
+.road-moon-s {
+position: absolute; top: 5%; left: 13%;
+width: 38px; height: 38px; border-radius: 50%;
+background: linear-gradient(135deg, #FFF5EB, #FDE8D0);
+box-shadow: 0 0 22px rgba(253,232,208,0.2); z-index: 2;
+}
+.road-stars-bg {
+position: absolute; top: 0; left: 0; right: 0; height: 55%;
+pointer-events: none; overflow: hidden;
+}
+
+.skyline {
+position: absolute; bottom: 33%; left: 0; width: 200%; height: 100px;
+animation: skyDrift 30s linear infinite; z-index: 1;
+}
+@keyframes skyDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.bld {
+position: absolute; bottom: 0; background: #091F20; border-radius: 1px 1px 0 0; opacity: 0.7;
+}
+.bw {
+position: absolute; width: 3px; height: 3px; border-radius: 1px;
+background: rgba(212,175,101,0.25);
+}
+
+.road-surface {
+position: absolute; bottom: 0; left: 0; right: 0; height: 33%;
+background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); z-index: 3;
+}
+.road-edge {
+position: absolute; top: 0; left: 0; right: 0; height: 1px;
+background: rgba(198,144,122,0.1);
+}
+.road-div {
+position: absolute; top: 46%; left: 0; width: 200%; height: 2px;
+background: repeating-linear-gradient(90deg, #F0D48A 0px, #F0D48A 25px, transparent 25px, transparent 55px);
+opacity: 0.35; animation: divMove 2s linear infinite;
+}
+@keyframes divMove { from { transform: translateX(0); } to { transform: translateX(-55px); } }
+
+.road-header {
+position: absolute; top: 3%; left: 0; right: 0; text-align: center; z-index: 20; padding: 0 15px;
+}
+.road-title { font-family: ‘Caveat’, cursive; font-size: 1.45em; color: #FFF5EB; opacity: 0.85; }
+.road-sub {
+font-family: ‘Cormorant Garamond’, serif; font-size: 0.63em;
+color: rgba(255,245,235,0.32); letter-spacing: 3px; margin-top: 3px; text-transform: uppercase;
+}
+.pctr {
+position: absolute; top: 3%; right: 15px;
+color: rgba(255,245,235,0.22); font-size: 0.72em; z-index: 20;
+font-family: ‘Cormorant Garamond’, serif; letter-spacing: 2px;
+}
+
+#carZone {
+position: absolute; bottom: 5%; left: 0; right: 0; height: 28%; z-index: 15;
+}
+.dcar {
+position: absolute; cursor: pointer;
+filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5));
+}
+.dcar:active { filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5)) brightness(1.15); }
+
+.dcar.sir { right: -220px; animation: sir 2s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+.dcar.sil { left: -220px; animation: sil 2s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+@keyframes sir { 0%{right:-220px} 70%{right:calc(50% - 100px)} 85%{right:calc(50% - 85px)} 100%{right:calc(50% - 90px)} }
+@keyframes sil { 0%{left:-220px} 70%{left:calc(50% - 100px)} 85%{left:calc(50% - 85px)} 100%{left:calc(50% - 90px)} }
+
+.dcar.idle { animation: cfloat 3s ease-in-out infinite; }
+@keyframes cfloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+
+.dcar.lr { animation: lr 1.2s cubic-bezier(0.4,0,0.7,0.2) forwards; }
+.dcar.ll { animation: ll 1.2s cubic-bezier(0.4,0,0.7,0.2) forwards; }
+@keyframes lr { to{transform:translateX(110vw);opacity:0} }
+@keyframes ll { to{transform:translateX(-110vw);opacity:0} }
+
+.ppop {
+position: absolute; top: 14%; left: 0; right: 0;
+display: flex; flex-direction: column; align-items: center;
+z-index: 25; padding: 0 20px;
+opacity: 0; transform: translateY(18px) scale(0.88);
+transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+pointer-events: none;
+}
+.ppop.vis { opacity: 1; transform: translateY(0) scale(1); }
+
+.pplate {
+background: linear-gradient(180deg, #FEFEFE 0%, #F4F0EC 100%);
+border: 3px solid #2A2A2A; border-radius: 8px;
+padding: 8px 30px 12px; min-width: 225px; text-align: center;
+box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+position: relative;
+}
+.pplate::before {
+content: ‘’; position: absolute; top: 3px; left: 4px; right: 4px;
+height: 3px; background: #1A5C5E; border-radius: 2px; opacity: 0.7;
+}
+.preg { font-family: ‘Cormorant Garamond’, serif; font-size: 0.48em; color: #1A5C5E; letter-spacing: 4px; font-weight: 600; margin-top: 5px; }
+.pnum { font-family: ‘Poppins’, sans-serif; font-size: 1.8em; font-weight: 700; color: #1a1a1a; letter-spacing: 5px; line-height: 1.2; }
+.pmsg {
+margin-top: 15px; font-family: ‘Caveat’, cursive; font-size: 1.28em;
+color: #FFF5EB; text-align: center; max-width: 305px;
+text-shadow: 0 2px 12px rgba(0,0,0,0.5); line-height: 1.35;
+}
+
+.tprompt {
+position: absolute; bottom: 11%; left: 0; right: 0; text-align: center;
+z-index: 20; pointer-events: none; transition: opacity 0.4s;
+}
+.tprompt span {
+display: inline-block; padding: 8px 24px; border-radius: 30px;
+background: rgba(198,144,122,0.1);
+border: 1px solid rgba(198,144,122,0.15);
+color: rgba(255,245,235,0.5); font-size: 0.76em;
+letter-spacing: 1px; font-weight: 500;
+animation: tpglow 2.5s ease-in-out infinite;
+}
+@keyframes tpglow { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+.dashbot {
+position: absolute; bottom: 0; left: 0; right: 0; height: 5%;
+background: linear-gradient(180deg, transparent, rgba(0,0,0,0.35)); z-index: 30;
+}
+
+/* ===== PRESCRIPTION ===== */
+#prescription-screen {
+background: #FFF5EB;
+background-image: linear-gradient(160deg, #FFF5EB 0%, #FDE8D0 50%, #F5DCC8 100%);
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+justify-content: flex-start;
+}
+.rxc {
+width: 90%; max-width: 395px; margin: 25px auto; padding: 26px 20px;
+background: #fff; border-radius: 3px;
+box-shadow: 0 4px 22px rgba(0,0,0,0.06);
+border-top: 4px solid #C6907A; position: relative;
+animation: rxs 0.8s ease-out;
+}
+@keyframes rxs { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+.rxh { text-align: center; padding-bottom: 14px; border-bottom: 2px dashed #eee; margin-bottom: 16px; }
+.rxh .ico { font-size: 2em; margin-bottom: 4px; }
+.rxh .dn { font-family: ‘Caveat’, cursive; font-size: 1.75em; color: #C6907A; line-height: 1; }
+.rxh .cl { font-family: ‘Cormorant Garamond’, serif; font-size: 0.68em; color: #aaa; letter-spacing: 2px; margin-top: 3px; text-transform: uppercase; }
+
+.rxp { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.8em; color: #888; }
+.rxp b { font-weight: 600; color: #444; }
+.rxsym { font-family: ‘Caveat’, cursive; font-size: 2.4em; color: #C6907A; opacity: 0.18; position: absolute; top: 82px; left: 16px; }
+
+.rxi {
+padding: 10px 0; border-bottom: 1px solid #f5f2f0;
+display: flex; align-items: flex-start; gap: 11px;
+opacity: 0; animation: rxin 0.5s ease-out forwards;
+}
+.rxi .ck {
+width: 21px; height: 21px; border-radius: 50%;
+background: linear-gradient(135deg, #2A7C7E, #1A5C5E);
+display: flex; align-items: center; justify-content: center;
+color: #fff; font-size: 0.62em; flex-shrink: 0; margin-top: 2px;
+}
+.rxi .md { font-weight: 600; color: #333; font-size: 0.9em; }
+.rxi .ds { font-size: 0.74em; color: #aaa; margin-top: 2px; }
+@keyframes rxin { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+
+.rxn {
+margin-top: 16px; padding: 13px;
+background: linear-gradient(135deg, #FFF5EB, #FDE8D0);
+border-radius: 10px; border-left: 3px solid #C6907A;
+}
+.rxn .nl { font-size: 0.66em; color: #C6907A; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.rxn .nt { font-family: ‘Caveat’, cursive; font-size: 1.12em; color: #666; line-height: 1.4; }
+
+.rxsg { margin-top: 20px; text-align: right; padding-top: 12px; border-top: 1px solid #eee; }
+.rxsg .sl { font-family: ‘Caveat’, cursive; font-size: 1.45em; color: #C6907A; }
+.rxsg .slab { font-family: ‘Cormorant Garamond’, serif; font-size: 0.58em; color: #ccc; letter-spacing: 2px; }
+
+.rxst {
+position: absolute; top: 46%; right: 10px; transform: rotate(15deg); opacity: 0.09;
+border: 3px solid #C6907A; border-radius: 50%;
+width: 82px; height: 82px; display: flex; align-items: center; justify-content: center;
+font-weight: 700; color: #C6907A; font-size: 0.58em; text-align: center; letter-spacing: 1px;
+}
+
+.nbtn {
+display: block; margin: 16px auto 26px;
+padding: 13px 40px; border-radius: 50px;
+border: 1px solid rgba(198,144,122,0.3);
+background: linear-gradient(135deg, #C6907A, #D4A088);
+color: #FFF5EB; font-family: ‘Quicksand’, sans-serif;
+font-size: 0.93em; font-weight: 600; cursor: pointer;
+box-shadow: 0 6px 22px rgba(198,144,122,0.25);
+-webkit-appearance: none; appearance: none;
+}
+.nbtn:active { opacity: 0.9; transform: scale(0.98); }
+
+/* ===== FINAL ===== */
+#final-screen {
+background: #091F20;
+background-image: linear-gradient(160deg, #091F20 0%, #0B3B3C 40%, #1A3A4A 70%, #0D2E2F 100%);
+}
+.lnc { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; }
+.ln {
+position: absolute; width: 26px; height: 40px;
+border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+animation: lsway 5s ease-in-out infinite alternate;
+}
+.ln::before {
+content: ‘’; position: absolute; top: -16px; left: 50%;
+transform: translateX(-50%); width: 1px; height: 16px;
+background: rgba(212,175,101,0.2);
+}
+@keyframes lsway { 0%{transform:rotate(-4deg)} 100%{transform:rotate(4deg)} }
+
+.fc { z-index: 10; text-align: center; padding: 28px; animation: ff 1.8s ease-out; }
+@keyframes ff { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+.fc .eid { font-family: ‘Caveat’, cursive; font-size: 2.7em; color: #D4AF65; text-shadow: 0 0 30px rgba(212,175,101,0.25); margin-bottom: 4px; }
+.fc .mub { font-family: ‘Cormorant Garamond’, serif; font-size: 0.88em; color: rgba(255,245,235,0.4); letter-spacing: 5px; margin-bottom: 28px; text-transform: uppercase; }
+.fc .msg { font-family: ‘Caveat’, cursive; font-size: 1.42em; color: #FFF5EB; line-height: 1.6; max-width: 315px; margin: 0 auto 28px; }
+.fc .frm { font-family: ‘Cormorant Garamond’, serif; font-size: 0.83em; color: rgba(255,245,235,0.32); letter-spacing: 2px; font-style: italic; }
+
+.hf { position: absolute; font-size: 1.1em; animation: fu 7s ease-in infinite; opacity: 0; }
+@keyframes fu { 0%{opacity:0;transform:translateY(100vh) scale(0.5)} 15%{opacity:0.7} 100%{opacity:0;transform:translateY(-20vh) scale(1.1)} }
+
+@media(max-width:380px) {
+.welcome-content h1{font-size:2.4em}
+.pnum{font-size:1.4em}
+.fc .eid{font-size:2.2em}
+.fc .msg{font-size:1.2em}
+}
+</style>
+
+</head>
+<body>
+
+<div id="welcome" class="screen active">
+  <div class="stars-container" id="stW"></div>
+  <div class="moon"></div><div class="moon-ring"></div>
+  <div class="welcome-content">
+    <div class="eid-badge">🌙 Eid Mubarak</div>
+    <h1>Something Small<br>For Someone Special</h1>
+    <p class="subtitle">made with care</p>
+    <button class="start-btn" onclick="go('road-screen')">Open Your Gift ✨</button>
+  </div>
+</div>
+
+<div id="road-screen" class="screen hidden">
+  <div class="road-scene">
+    <div class="road-stars-bg" id="stR"></div>
+    <div class="road-moon-s"></div>
+    <div class="skyline" id="sky"></div>
+    <div class="road-header">
+      <div class="road-title">🚗 The Number Plate Game</div>
+      <div class="road-sub">remember that night we read every plate?</div>
+    </div>
+    <div class="pctr" id="pctr">1 / 7</div>
+    <div class="ppop" id="ppop">
+      <div class="pplate">
+        <div class="preg" id="preg">NEW YORK</div>
+        <div class="pnum" id="pnum">---</div>
+      </div>
+      <div class="pmsg" id="pmsg"></div>
+    </div>
+    <div id="cz"></div>
+    <div class="road-surface"><div class="road-edge"></div><div class="road-div"></div></div>
+    <div class="tprompt" id="tp"><span>tap the car when it stops ✨</span></div>
+    <div class="dashbot"></div>
+  </div>
+</div>
+
+<div id="prescription-screen" class="screen hidden">
+  <div class="rxc">
+    <div class="rxh"><div class="ico">🩺</div><div class="dn">Dr. Seemab</div><div class="cl">Specialist in Stubborn Patients</div></div>
+    <div class="rxp"><div>Patient: <b>Humayra Khan</b></div><div>Date: <b>Eid 2025</b></div></div>
+    <div class="rxsym">℞</div>
+    <div>
+      <div class="rxi" style="animation-delay:0.2s"><div class="ck">✓</div><div><div class="md">🍵 Hot Chai / Soup</div><div class="ds">3 times daily. No excuses. Doctor's orders.</div></div></div>
+      <div class="rxi" style="animation-delay:0.4s"><div class="ck">✓</div><div><div class="md">🛌 Mandatory Rest</div><div class="ds">Minimum 8 hours. The clothing business can wait.</div></div></div>
+      <div class="rxi" style="animation-delay:0.6s"><div class="ck">✓</div><div><div class="md">🧣 Warm Jacket Protocol</div><div class="ds">At all times. Patient has history of ignoring cold weather.</div></div></div>
+      <div class="rxi" style="animation-delay:0.8s"><div class="ck">✓</div><div><div class="md">🍰 Eid Dessert Therapy</div><div class="ds">1 generous plate minimum. Cake is medicine today.</div></div></div>
+      <div class="rxi" style="animation-delay:1.0s"><div class="ck">✓</div><div><div class="md">📵 Zero Stress</div><div class="ds">No work. No overthinking. Eid is for resting only.</div></div></div>
+      <div class="rxi" style="animation-delay:1.2s"><div class="ck">✓</div><div><div class="md">😊 1 Smile Per Hour</div><div class="ds">Patient is too beautiful to look sad. Strictly enforced.</div></div></div>
+    </div>
+    <div class="rxn"><div class="nl">⚠️ Doctor's Note</div><div class="nt">Patient is extremely stubborn. Refuses rest. Goes to class with fever. Works while fasting. Requires close monitoring and unlimited chai supply.<br><br>Prognosis: Excellent. She just needs someone who actually makes sure she takes care of herself. 💛</div></div>
+    <div class="rxsg"><div class="sl">Dr. Seemab ✍️</div><div class="slab">Your Personal Care Specialist</div></div>
+    <div class="rxst">EID<br>APPROVED<br>2025</div>
+  </div>
+  <button class="nbtn" onclick="go('final-screen')">One More Thing... 🌙</button>
+</div>
+
+<div id="final-screen" class="screen hidden">
+  <div class="lnc" id="lnc"></div>
+  <div class="fc">
+    <div class="eid">Eid Mubarak 🌙</div>
+    <div class="mub">to my favourite person</div>
+    <div class="msg">
+      I know you're wrapped in blankets,<br>coughing and being stubborn about rest.<br><br>
+      But I just wanted you to know...<br><br>
+      The passenger seat is cold without you.<br>
+      The number plates aren't funny alone.<br>
+      And LA is nice, but it's missing something.<br><br>
+      Get well soon. I mean it. 💛<br><br>Happy Eid, Humayra.
+    </div>
+    <div class="frm">— from the one who reads every number plate with you</div>
+  </div>
+</div>
+
+<script>
+function mkS(id,n){var c=document.getElementById(id);if(!c)return;for(var i=0;i<n;i++){var s=document.createElement('div');s.className='star';var z=Math.random()*2.5+0.8;s.style.width=z+'px';s.style.height=z+'px';s.style.left=(Math.random()*100)+'%';s.style.top=(Math.random()*100)+'%';s.style.animationDelay=(Math.random()*4)+'s';s.style.animationDuration=(2.5+Math.random()*3)+'s';c.appendChild(s);}}
+mkS('stW',55);mkS('stR',35);
+
+var sky=document.getElementById('sky');
+function addB(ox){var ws=[22,32,18,42,28,16,48,25,20,38,14,35,22,40,30,18,33,26,45,20];var hs=[40,70,30,85,52,35,95,48,38,62,25,75,42,82,55,32,68,50,88,36];var x=ox;for(var i=0;i<ws.length;i++){var b=document.createElement('div');b.className='bld';b.style.left=x+'px';b.style.width=ws[i]+'px';b.style.height=hs[i]+'px';for(var wi=0;wi<Math.floor(hs[i]/14);wi++){for(var wj=0;wj<Math.floor(ws[i]/8);wj++){if(Math.random()>0.5){var w=document.createElement('div');w.className='bw';w.style.top=(8+wi*12)+'px';w.style.left=(4+wj*8)+'px';w.style.opacity=String(Math.random()*0.5+0.2);b.appendChild(w);}}}sky.appendChild(b);x+=ws[i]+(Math.random()*12+4);}return x;}
+var tw=addB(0);addB(tw+15);
+
+var lnc=document.getElementById('lnc');
+var lC=['rgba(212,175,101,0.3)','rgba(198,144,122,0.3)','rgba(42,124,126,0.3)','rgba(232,191,168,0.25)'];
+for(var i=0;i<8;i++){var l=document.createElement('div');l.className='ln';l.style.left=(8+Math.random()*84)+'%';l.style.top=(3+Math.random()*28)+'%';l.style.background=lC[i%4];l.style.boxShadow='0 0 18px '+lC[i%4];l.style.animationDelay=(Math.random()*4)+'s';l.style.animationDuration=(4+Math.random()*3)+'s';lnc.appendChild(l);}
+
+var fs=document.getElementById('final-screen');
+var hc=['💛','✨','🌙','💫','🤎'];
+for(var i=0;i<10;i++){var h=document.createElement('div');h.className='hf';h.textContent=hc[i%5];h.style.left=(Math.random()*100)+'%';h.style.animationDelay=(Math.random()*9)+'s';h.style.animationDuration=(6+Math.random()*4)+'s';fs.appendChild(h);}
+
+function go(id){var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++){ss[i].classList.remove('active');ss[i].classList.add('hidden');}var t=document.getElementById(id);t.classList.remove('hidden');t.classList.add('active');if(id==='road-screen'){pI=-1;setTimeout(lC2,600);}}
+
+function cSVG(bc,rc,fl){var g=fl?'<g transform="scale(-1,1) translate(-180,0)">':'<g>';return '<svg width="180" height="72" viewBox="0 0 180 72">'+g+'<rect x="16" y="27" width="148" height="32" rx="12" fill="'+bc+'"/><rect x="38" y="7" width="96" height="27" rx="11" fill="'+rc+'"/><rect x="47" y="12" width="34" height="17" rx="5" fill="rgba(200,230,240,0.3)"/><rect x="89" y="12" width="34" height="17" rx="5" fill="rgba(200,230,240,0.3)"/><rect x="47" y="12" width="34" height="8" rx="3" fill="rgba(255,255,255,0.08)"/><rect x="89" y="12" width="34" height="8" rx="3" fill="rgba(255,255,255,0.08)"/><ellipse cx="50" cy="61" rx="12" ry="11" fill="#1a1a1a"/><ellipse cx="50" cy="61" rx="5.5" ry="5" fill="#3a3a3a"/><ellipse cx="130" cy="61" rx="12" ry="11" fill="#1a1a1a"/><ellipse cx="130" cy="61" rx="5.5" ry="5" fill="#3a3a3a"/><rect x="156" y="34" width="12" height="7" rx="3" fill="#F0D48A" opacity="0.85"/><rect x="11" y="34" width="12" height="7" rx="3" fill="#C0696E" opacity="0.75"/></g></svg>';}
+
+var cCols=[{b:'#8B6F5E',r:'#7A6050'},{b:'#4A7C7E',r:'#3D6B6D'},{b:'#C6907A',r:'#B37E6A'},{b:'#6B8F71',r:'#5A7E60'},{b:'#9B7A5B',r:'#8A6A4C'},{b:'#7B6B8A',r:'#6A5A79'},{b:'#B07878',r:'#9D6868'}];
+var pls=[
+{n:'GET W3LL',rg:'NEW YORK',m:'Coughing little bit? More like coughing a LOT. Take your medicine!',f:'right',l:'22%'},
+{n:'E1D 2025',rg:'NEW YORK',m:'Your first Eid gift is this silly app. Sorry not sorry. 🌙',f:'left',l:'48%'},
+{n:'H0T S0UP',rg:"DOCTOR'S ORDERS",m:"If you haven't had soup today, this plate is judging you.",f:'right',l:'8%'},
+{n:'NO W0RK',rg:'EID SPECIAL',m:'The dresses can wait. The bangles can wait. REST.',f:'left',l:'38%'},
+{n:'M1SS U',rg:'LOS ANGELES',m:'The passenger seat has been very quiet today. It complained.',f:'right',l:'28%'},
+{n:'DR1VE OK',rg:'MEMORY LANE',m:'Remember when we read every plate that night? That was everything.',f:'left',l:'12%'},
+{n:'SM1LE 4ME',rg:'LAST ONE',m:'Last plate! Now smile and check your prescription below 💛',f:'right',l:'32%'}
+];
+
+var pI=-1;var cT=false;
+
+function lC2(){
+pI++;if(pI>=pls.length){go('prescription-screen');return;}
+var p=pls[pI];var cc=cCols[pI%cCols.length];
+document.getElementById('pctr').textContent=(pI+1)+' / '+pls.length;
+document.getElementById('ppop').classList.remove('vis');
+document.getElementById('tp').style.opacity='1';
+var z=document.getElementById('cz');z.innerHTML='';
+var c=document.createElement('div');c.className='dcar';c.innerHTML=cSVG(cc.b,cc.r,p.f==='left');c.style.top=p.l;
+if(p.f==='right'){c.classList.add('sir');}else{c.classList.add('sil');}
+z.appendChild(c);cT=false;
+setTimeout(function(){c.classList.remove('sir');c.classList.remove('sil');c.style.left='calc(50% - 90px)';c.style.right='auto';c.classList.add('idle');cT=true;
+c.onclick=function(){if(!cT)return;cT=false;
+document.getElementById('preg').textContent=p.rg;document.getElementById('pnum').textContent=p.n;document.getElementById('pmsg').textContent=p.m;
+document.getElementById('ppop').classList.add('vis');document.getElementById('tp').style.opacity='0';
+setTimeout(function(){c.classList.remove('idle');if(p.f==='right'){c.classList.add('ll');}else{c.classList.add('lr');}setTimeout(lC2,1000);},2800);};},2100);}
+</script>
+
+</body>
+</html>
